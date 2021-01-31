@@ -1,0 +1,9 @@
+{
+    "sample" : "eccDNA",
+    "fast5" : "/home/meng/eccDNA/fast5/",
+    "flowcell" : "FLO-MIN106",
+    "kit" : "SQK-LSK109",
+    "threads" : 8,
+    "reference" : "/home/meng/reference/Mus_musculus.combined.mmi",
+    "workdir" : "/home/meng/eccDNA"
+}

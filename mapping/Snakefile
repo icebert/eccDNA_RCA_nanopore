@@ -1,0 +1,67 @@
+configfile: "config.json"
+
+
+rule all:
+    input:
+        bam = config["workdir"] + '/' + config["sample"] + '.paf',
+        qc = config["workdir"] + '/' + config["sample"] + '_qc'
+
+
+rule basecall:
+    input:
+        config["fast5"]
+    output:
+        directory(config["workdir"] + '/{sample}_fastq')
+    params:
+        flowcell = config["flowcell"],
+        kit = config["kit"]
+    threads:
+        config["threads"]
+    shell:
+        "guppy_basecaller --input_path {input} --save_path {output} "
+        "--flowcell {params.flowcell} --kit {params.kit} --qscore_filtering --calib_detect "
+        "--num_callers {threads} --trim_barcodes --trim_strategy dna --disable_pings --device auto"
+
+
+rule trim_adapter:
+    input:
+        config["workdir"] + '/{sample}_fastq'
+    output:
+        config["workdir"] + '/{sample}.fastq.gz'
+    shell:
+        "porechop --extra_end_trim 0 --discard_middle -i {input}/pass/ | gzip > {output}"
+
+
+rule mapping:
+    input:
+        config["workdir"] + '/{sample}.fastq.gz'
+    output:
+        config["workdir"] + '/{sample}.paf'
+    params:
+        refidx = config["reference"]
+    log:
+        'logs/mapping/{sample}.log'
+    threads:
+        config["threads"]
+    shell:
+        "minimap2 -x map-ont -c --secondary=no -t {threads} {params.refidx} {input} > {output} 2>>{log}"
+
+
+rule qc:
+    input:
+        fastq = config["workdir"] + '/{sample}_fastq'
+    output:
+        directory(config["workdir"] + '/{sample}_qc')
+    shell:
+        """
+        mkdir {output}
+        
+        Rscript -e "rmarkdown::render('bin/nanoQC/Nanopore_SumStatQC.Rmd', 'html_document', output_file='{output}/SumStatQC.html')" -i {input.fastq}/sequencing_summary.txt
+
+        Rscript -e "rmarkdown::render('bin/POREquality/POREquality.Rmd', output_file='{output}/POREquality.html')" -i {input.fastq}/sequencing_summary.txt
+
+        Rscript bin/minionQC/MinIONQC.R -i {input.fastq}/sequencing_summary.txt -o {output}/
+        """
+
+
+
