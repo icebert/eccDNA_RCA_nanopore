@@ -28,6 +28,8 @@ rule trim_adapter:
         config["workdir"] + '/{sample}_fastq'
     output:
         config["workdir"] + '/{sample}.fastq.gz'
+    threads:
+        config["threads"]
     shell:
         "porechop --extra_end_trim 0 --discard_middle -i {input}/pass/ | gzip > {output}"
 

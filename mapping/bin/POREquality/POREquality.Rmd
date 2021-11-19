@@ -529,7 +529,7 @@ ggplot(seq_dt, aes(x=start_time/3600, y=mean_qscore_template, colour=Qscore_thre
 ### Pore activity
 ```{r death_rate}
 time_hours=c(0.003,0.011,0.66)
-for (i in seq(1,run.length,1)){time_hours[i+3]<-i} # append up to run length, after the intial early minutes
+for (i in seq(1,run.length)){time_hours[i+3]<-i} # append up to run length, after the intial early minutes
 death_df <- data.frame(time_hours)
 death_list = list()
 for (i in 1:length(time_hours)){

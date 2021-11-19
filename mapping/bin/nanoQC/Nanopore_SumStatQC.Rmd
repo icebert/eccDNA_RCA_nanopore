@@ -503,50 +503,8 @@ ggplot(binnedTemporalDataPerHour, aes(time)) +
 ```
 
 
-The temporal data presented in the figure above has been scaled to gigabases of sequence produced per hour. For a finer resolution of performance the **`R`** code that prepares this report could be modified for a more frequent sample interval. 
 
-
-```{r temporalPerformance, echo=FALSE}
-
-# binnedTemporalDataPerHour is scaled to Gbp per hour - rescale to raw for cumulative plotting
-binnedTemporalDataPerHour$pass <- binnedTemporalDataPerHour$pass / 60 * sampleIntervalMinutes
-binnedTemporalDataPerHour$fail <- binnedTemporalDataPerHour$fail / 60 * sampleIntervalMinutes
-
-# https://stackoverflow.com/questions/31404679/can-ggplot2-find-the-intersections-or-is-there-any-other-neat-way
-acquireTimePoints <- which(binnedTemporalDataPerHour$pass > 0)
-targetInterpolate <- approxfun(x=binnedTemporalDataPerHour[acquireTimePoints, "time"], y=cumsum(binnedTemporalDataPerHour[acquireTimePoints, "pass"]))
-
-base50 <- sum(passedSeqs$sequence_length_template)/1e9*0.5
-base90 <- sum(passedSeqs$sequence_length_template)/1e9*0.9
-
-T50 <- optimize(function(t0) abs(targetInterpolate(t0) - base50), 
-                interval = range(binnedTemporalDataPerHour[acquireTimePoints, "time"]))
-T90 <- optimize(function(t0) abs(targetInterpolate(t0) - base90), 
-                interval = range(binnedTemporalDataPerHour[acquireTimePoints, "time"]))
-```
-
-
-
-
-```{r cumulativeSequencePlotBP, include=TRUE, cache=FALSE, echo=FALSE, fig.margin=FALSE}
-
-ggplot(binnedTemporalDataPerHour, aes(time)) +
-  geom_line(aes(y = cumsum(fail), colour = "fail"), size=1) + 
-  geom_line(aes(y = cumsum(pass), colour = "pass"), size=1) +
-   scale_color_manual(name="QV", values=c("fail"=brewer.pal(6, "Paired")[1], "pass"=brewer.pal(6, "Paired")[2])) +
-  geom_segment(x=T50$minimum, y=0, xend=T50$minimum, yend=base50, colour="darkgray", size=1) +
-  geom_segment(x=0, y=base50, xend=T50$minimum, yend=base50, colour="darkgray", size=1) +
-  annotate("text", x=T50$minimum, y=base50, label=" T50", vjust=1, hjust=0, colour="SteelBlue") +
-  geom_segment(x=T90$minimum, y=0, xend=T90$minimum, yend=base90, colour="darkgray", size=1) +
-  geom_segment(x=0, y=base90, xend=T90$minimum, yend=base90, colour="darkgray", size=1) +
-  annotate("text", x=T90$minimum, y=base90, label=" T90", vjust=1, hjust=0, colour="SteelBlue") +
-  xlab("Time (hours)") + 
-  ylab("Number of bases sequenced (Gigabases)") + 
-  labs(title="Plot showing cumulative bases sequenced against time")
-
-```
-
-In addition to plotting the temporal production of data, the cumulative plot shown above shows how data is accumulated during the run. From this dataset, we have measured a total of `r round(sum(passedSeqs$sequence_length_template)/1e9, 2)` Gb of quality passing sequence. We can identify the timepoint T50, where 50% of sequenced bases have been collected within this time - or `r round(T50$minimum, 2)` hours in this example. This is displayed on the graph along with T90, the time at which 90% of the sequenced based have been acquired.
+From this dataset, we have measured a total of `r round(sum(passedSeqs$sequence_length_template)/1e9, 2)` Gb of quality passing sequence.
 
 
 ```{r cumulativeSequencePlotReads, include=TRUE, cache=FALSE, echo=FALSE, fig.margin=TRUE}
