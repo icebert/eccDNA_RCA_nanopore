@@ -2,6 +2,10 @@
 
 eccDNA identification from nanopore long reads of rolling-circle amplicon
 
+
+[![DOI:10.1038/s41586-021-04009-w](https://zenodo.org/badge/DOI/10.1038/s41586-021-04009-w.svg)](https://doi.org/10.1038/s41586-021-04009-w)
+
+
 #### Dependency (python packages)
 
 - [pyfaidx](https://pypi.org/project/pyfaidx/)
@@ -63,7 +67,7 @@ Example info file:
 | 665d4815-998b-42be-8af7-9a2dc31157b3 | 5         | 2         | 628       | 627       | chr10:91847836-91848275(+)\|chr19:58942249-58942436(+) |
 | 02714a9a-3753-47e9-b770-8aa606856ecc | 4         | 2         | 507       | 505       | chr12:53934104-53934326(+)\|chr12:86923760-86924043(-) |
 
-The seq file is the full length sequence for each eccDNA in fasta format. The id for each sequence is the readname.
+The seq file is the reconstructed full length sequence for each eccDNA in fasta format. The id for each sequence is the readname.
 
 The var file contains the variants infered from the Nanopore reads compared to reference genome sequence, with 6 columns:
 
@@ -116,4 +120,16 @@ Location:
 Location:
         chr10:91847836-91848275 (+)     chr19:58942249-58942436 (+)
 ```
+
+
+#### Example sequencing data
+
+The example Nanopore reads of rolling-circle amplified eccDNA are available at
+
+[![DOI:10.6084/m9.figshare.17046158.v1](http://img.shields.io/badge/DOI-10.6084/m9.figshare.17046158.v1-B31B1B.svg)](https://doi.org/10.6084/m9.figshare.17046158.v1)
+
+
+#### Citation
+
+Wang, Y., Wang, M., Djekidel, M.N. et al. eccDNAs are apoptotic products with high innate immunostimulatory activity. Nature 599, 308–314 (2021).
 
