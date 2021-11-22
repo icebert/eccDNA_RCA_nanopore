@@ -14,13 +14,14 @@ rule basecall:
         directory(config["workdir"] + '/{sample}_fastq')
     params:
         flowcell = config["flowcell"],
-        kit = config["kit"]
+        kit = config["kit"],
+        device = "--device auto" if config["GPU"].upper() == "Y" else ""
     threads:
         config["threads"]
     shell:
         "guppy_basecaller --input_path {input} --save_path {output} "
         "--flowcell {params.flowcell} --kit {params.kit} --calib_detect "
-        "--num_callers {threads} --trim_barcodes --trim_strategy dna --disable_pings --device auto"
+        "--num_callers {threads} --trim_barcodes --trim_strategy dna --disable_pings {params.device}"
 
 
 rule trim_adapter:

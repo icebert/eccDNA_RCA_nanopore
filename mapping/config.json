@@ -5,5 +5,6 @@
     "kit" : "SQK-LSK109",
     "threads" : 8,
     "reference" : "/home/meng/reference/Mus_musculus.combined.mmi",
-    "workdir" : "/home/meng/eccDNA"
+    "workdir" : "/home/meng/eccDNA",
+    "GPU" : "Y"
 }
