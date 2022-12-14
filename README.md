@@ -1,9 +1,9 @@
-# eccDNA_RCA_nanopore
+# Flec - full-length eccDNA caller
 
 eccDNA identification from nanopore long reads of rolling-circle amplicon
 
 
-[![DOI:10.1038/s41586-021-04009-w](https://zenodo.org/badge/DOI/10.1038/s41586-021-04009-w.svg)](https://doi.org/10.1038/s41586-021-04009-w)
+[![DOI:10.1038/s41586-021-04009-w](https://zenodo.org/badge/DOI/10.1038/s41586-021-04009-w.svg)](https://doi.org/10.1038/s41586-021-04009-w)        [![DOI:10.1038/s41596-022-00783-7](https://zenodo.org/badge/DOI/10.1038/s41596-022-00783-7.svg)](https://doi.org/10.1038/s41596-022-00783-7)
 
 
 #### Dependency (python packages)
@@ -132,4 +132,6 @@ The example Nanopore reads of rolling-circle amplified eccDNA are available at
 #### Citation
 
 Wang, Y., Wang, M., Djekidel, M.N. et al. eccDNAs are apoptotic products with high innate immunostimulatory activity. Nature 599, 308–314 (2021).
+
+Wang, Y., Wang, M. & Zhang, Y. Purification, full-length sequencing and genomic origin mapping of eccDNA. Nat Protoc (2022)
 
